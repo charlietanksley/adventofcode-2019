@@ -19,8 +19,8 @@ RSpec.describe Operation do
   context "addition" do
     let(:position) { 0 }
 
-    it "reports the action as 'execute'" do
-      expect(operation.action).to eq(Operation::EXECUTE)
+    it "is neither a skip nor a terminate" do
+      expect([operation.terminate?, operation.skip?].all?).to be(false)
     end
 
     it "identifies the correct replacement_position for the update" do
@@ -37,8 +37,8 @@ RSpec.describe Operation do
   context "multiplication" do
     let(:position) { 1 }
 
-    it "reports the action as 'execute'" do
-      expect(operation.action).to eq(Operation::EXECUTE)
+    it "is neither a skip nor a terminate" do
+      expect([operation.terminate?, operation.skip?].all?).to be(false)
     end
 
     it "identifies the correct replacement_position for the update" do
@@ -55,16 +55,16 @@ RSpec.describe Operation do
   context "skipping" do
     let(:position) { 2 }
 
-    it "reports the action as 'skip'" do
-      expect(operation.action).to eq(Operation::SKIP)
+    it "knows it is a `skip?` step" do
+      expect(operation.skip?).to be_truthy
     end
   end
 
   context "terminating" do
     let(:position) { 5 }
 
-    it "reports the action as 'terminate'" do
-      expect(operation.action).to eq(Operation::TERMINATE)
+    it "knows it is a `terminate?` step" do
+      expect(operation.terminate?).to be_truthy
     end
   end
 end

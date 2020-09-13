@@ -30,28 +30,21 @@ end
 # The interpreter that converts a subset of an Intcode instruction set
 # into instructions.
 class Operation
-  EXECUTE = :execute
-  TERMINATE = :terminate
-  SKIP = :skip
-
   def initialize(opcode_position, instructions)
     @opcode_position = opcode_position
     @instructions = instructions
   end
 
-  def action
-    case opcode
-    when 1, 2
-      EXECUTE
-    when 99
-      TERMINATE
-    else
-      SKIP
-    end
-  end
-
   def replacement_position
     instructions[opcode_position + 3]
+  end
+
+  def skip?
+    ![1, 2, 99].include?(opcode)
+  end
+
+  def terminate?
+    opcode == 99
   end
 
   def value
