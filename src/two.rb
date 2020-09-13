@@ -7,13 +7,13 @@ require "pry"
 # $ pry -Isrc
 #
 # require "two"
-# program_instructions = File.read("data/two_a.txt").split(",").map(&:to_i);
-# program = IntcodeProgram.new(program_instructions);
-# program.update_address(1, 12)
-# program.update_address(2, 2)
+# program_instructions = File.read("data/two_a.txt").split(",").map(&:to_i)
+# program = IntcodeProgram.new(program_instructions)
+# program.update_noun(12)
+# program.update_verb(2)
 # program.run
 # program.output
-#=> 574684
+#=> 4462686
 
 # How to run as part 2 of https://adventofcode.com/2019/day/2
 #
@@ -149,10 +149,6 @@ class IntcodeProgram
         position += 4
       end
     end
-  end
-
-  def update_address(location, value)
-    memory[location] = value
   end
 
   def update_noun(noun)
