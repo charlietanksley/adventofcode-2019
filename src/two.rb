@@ -2,6 +2,19 @@
 
 require "pry"
 
+# How to run as part of https://adventofcode.com/2019/day/2
+#
+# $ pry -Isrc
+#
+# require "two"
+# instructions = File.read("data/two_a.txt").split(",").map(&:to_i);
+# program = IntcodeProgram.new(instructions);
+# program.update_instructions(1, 12)
+# program.update_instructions(2, 2)
+# program.run
+# program.output
+#=> 574684
+
 # A set of Intcode instructions. Responsible for returning current
 # values in the instruction set and and updating values at the request
 # of others.
@@ -89,6 +102,10 @@ class IntcodeProgram
     @instructions = Instructions.new(instructions)
   end
 
+  def output
+    instructions[0]
+  end
+
   def run
     position = 0
     instructions.size.times do
@@ -105,7 +122,7 @@ class IntcodeProgram
     end
   end
 
-  def output
-    instructions[0]
+  def update_instructions(location, value)
+    instructions[location] = value
   end
 end
