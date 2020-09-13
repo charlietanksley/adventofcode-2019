@@ -30,7 +30,8 @@ class Operation
   TERMINATE = :terminate
   SKIP = :skip
 
-  def initialize(instructions)
+  def initialize(opcode_position, instructions)
+    @opcode_position = opcode_position
     @instructions = instructions
   end
 
@@ -45,17 +46,21 @@ class Operation
     end
   end
 
-  def position
-    instructions[3]
+  def replacement_position
+    instructions[opcode_position + 3]
   end
 
   def value
-    instructions[1].send(operation, instructions[2])
+    operand1 = instructions[opcode_position + 1]
+    operand2 = instructions[opcode_position + 2]
+
+    operand1.send(operation, operand2)
   end
 
   private
 
   attr_reader :instructions
+  attr_reader :opcode_position
 
   def operation
     case opcode
@@ -69,7 +74,7 @@ class Operation
   end
 
   def opcode
-    instructions[0]
+    instructions[opcode_position]
   end
 end
 # A program

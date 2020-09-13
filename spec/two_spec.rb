@@ -17,46 +17,47 @@ RSpec.describe Instructions do
 end
 
 RSpec.describe Operation do
-  let(:operation) { described_class.new(instructions) }
+  let(:operation) { described_class.new(position, instructions) }
+  let(:instructions) { [1, 2, 3, 4, 5, 99, nil] }
 
   context "addition" do
-    let(:instructions) { [1, 1, 2, 1, 99] }
+    let(:position) { 0 }
 
     it "reports the action as 'execute'" do
       expect(operation.action).to eq(Operation::EXECUTE)
     end
 
-    it "identifies the correct position for the update" do
-      expect(operation.position).to eq(1)
+    it "identifies the correct replacement_position for the update" do
+      expect(operation.replacement_position).to eq(4)
     end
 
     it "identifies the correct value for the update" do
-      expect(operation.value).to eq(3)
+      expect(operation.value).to eq(5)
     end
 
     it "gracefully handles a nil value"
   end
 
   context "multiplication" do
-    let(:instructions) { [1, 2, 2, 1, 99] }
+    let(:position) { 1 }
 
     it "reports the action as 'execute'" do
       expect(operation.action).to eq(Operation::EXECUTE)
     end
 
-    it "identifies the correct position for the update" do
-      expect(operation.position).to eq(1)
+    it "identifies the correct replacement_position for the update" do
+      expect(operation.replacement_position).to eq(5)
     end
 
     it "identifies the correct value for the update" do
-      expect(operation.value).to eq(4)
+      expect(operation.value).to eq(12)
     end
 
     it "gracefully handles a nil value"
   end
 
   context "skipping" do
-    let(:instructions) { [nil, 1, 2, 1] }
+    let(:position) { 2 }
 
     it "reports the action as 'skip'" do
       expect(operation.action).to eq(Operation::SKIP)
@@ -64,7 +65,7 @@ RSpec.describe Operation do
   end
 
   context "terminating" do
-    let(:instructions) { [99, 1, 2, 1] }
+    let(:position) { 5 }
 
     it "reports the action as 'terminate'" do
       expect(operation.action).to eq(Operation::TERMINATE)
