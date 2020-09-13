@@ -78,6 +78,14 @@ RSpec.describe IntcodeProgram do
     end
   end
 
+  describe "finding unknown noun/verb combo" do
+    it "determines the missing noun and verb" do
+      program_instructions = File.read("data/two_a.txt").split(",").map(&:to_i)
+      noun_and_verb = described_class.find_noun_and_verb(program_instructions, 19_690_720)
+      expect(noun_and_verb).to eq([59, 36])
+    end
+  end
+
   context "regression tests" do
     {
       [1, 0, 0, 0, 99] => [2, 0, 0, 0, 99],

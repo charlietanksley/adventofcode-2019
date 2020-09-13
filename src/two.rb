@@ -15,6 +15,17 @@ require "pry"
 # program.output
 #=> 574684
 
+# How to run as part 2 of https://adventofcode.com/2019/day/2
+#
+# $ pry -Isrc
+#
+# require "two"
+# program_instructions = File.read("data/two_a.txt").split(",").map(&:to_i);
+# noun, verb = IntcodeProgram.find_noun_and_verb(program_instructions, 19_690_720)
+# #=> [59, 36]
+# 100 * noun + verb
+# #=> 5936
+
 # A set of Intcode memory. Responsible for returning current
 # values in the instruction set and and updating values at the request
 # of others.
@@ -96,6 +107,20 @@ end
 # (an array of integers) as input and returns an instruction set
 # (array of integers) as output.
 class IntcodeProgram
+  def self.find_noun_and_verb(instructions, goal, noun_range = (0..99), verb_range = (0..99))
+    noun_range.each do |noun|
+      verb_range.each do |verb|
+        working_instructions = instructions.dup
+
+        program = new(working_instructions)
+        program.update_noun(noun)
+        program.update_verb(verb)
+        program.run
+        return [noun, verb] if program.output == goal
+      end
+    end
+  end
+
   attr_reader :memory
 
   def initialize(memory)
@@ -128,5 +153,13 @@ class IntcodeProgram
 
   def update_address(location, value)
     memory[location] = value
+  end
+
+  def update_noun(noun)
+    memory[1] = noun
+  end
+
+  def update_verb(verb)
+    memory[2] = verb
   end
 end
