@@ -48,8 +48,8 @@ class Operation
   end
 
   def value
-    operand1 = instructions[opcode_position + 1]
-    operand2 = instructions[opcode_position + 2]
+    operand1 = instructions[instructions[opcode_position + 1]]
+    operand2 = instructions[instructions[opcode_position + 2]]
 
     operand1.send(operation, operand2)
   end
