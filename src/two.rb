@@ -2,6 +2,26 @@
 
 require "pry"
 
+# A set of Intcode instructions. Responsible for returning current
+# values in the instruction set and and updating values at the request
+# of others.
+class Instructions
+  def initialize(instructions)
+    @instructions = instructions
+  end
+
+  def read_position(position)
+    instructions[position]
+  end
+
+  def write_position(position, value)
+    @instructions[position] = value
+  end
+
+  private
+
+  attr_reader :instructions
+end
 # A program
 class Program
   attr_reader :states
