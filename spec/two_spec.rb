@@ -28,7 +28,7 @@ RSpec.describe Operation do
     end
 
     it "identifies the correct value for the update" do
-      expect(operation.value).to eq(5)
+      expect(operation.value).to eq(7)
     end
 
     it "gracefully handles a nil value"
@@ -46,7 +46,7 @@ RSpec.describe Operation do
     end
 
     it "identifies the correct value for the update" do
-      expect(operation.value).to eq(12)
+      expect(operation.value).to eq(20)
     end
 
     it "gracefully handles a nil value"
