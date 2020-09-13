@@ -70,18 +70,27 @@ RSpec.describe Operation do
 end
 
 RSpec.describe IntcodeProgram do
+  describe "program output" do
+    it "returns an integer that is the program's output" do
+      program = described_class.new([1, 1, 1, 4, 99, 5, 6, 0, 99])
+      program.run
+      expect(program.output).to eq(30)
+    end
+  end
+
   context "regression tests" do
     {
       [1, 0, 0, 0, 99] => [2, 0, 0, 0, 99],
       [2, 3, 0, 3, 99] => [2, 3, 0, 6, 99],
       [2, 4, 4, 5, 99, 0] => [2, 4, 4, 5, 99, 9801],
       [1, 1, 1, 4, 99, 5, 6, 0, 99] => [30, 1, 1, 4, 2, 5, 6, 0, 99]
-    }.each_pair do |instructions, expected_output|
-      it "converts #{instructions} to #{expected_output}" do
+    }.each_pair do |instructions, expected_instructions|
+      it "converts #{instructions} to #{expected_instructions}" do
         program = described_class.new(instructions)
-        output = program.run
+        program.run
+        updated_instructions = program.instructions.to_a
 
-        expect(output).to eq(expected_output)
+        expect(updated_instructions).to eq(expected_instructions)
       end
     end
   end

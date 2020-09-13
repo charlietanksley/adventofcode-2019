@@ -83,6 +83,8 @@ end
 # (an array of integers) as input and returns an instruction set
 # (array of integers) as output.
 class IntcodeProgram
+  attr_reader :instructions
+
   def initialize(instructions)
     @instructions = Instructions.new(instructions)
   end
@@ -101,10 +103,9 @@ class IntcodeProgram
         position += 4
       end
     end
-    instructions.to_a
   end
 
-  private
-
-  attr_reader :instructions
+  def output
+    instructions[0]
+  end
 end
