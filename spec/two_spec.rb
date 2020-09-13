@@ -2,7 +2,7 @@
 
 require_relative "../src/two"
 
-RSpec.describe Instructions do
+RSpec.describe Memory do
   let(:instructions) { [0, 1, 2, nil] }
   subject { described_class.new(instructions) }
 
@@ -84,13 +84,13 @@ RSpec.describe IntcodeProgram do
       [2, 3, 0, 3, 99] => [2, 3, 0, 6, 99],
       [2, 4, 4, 5, 99, 0] => [2, 4, 4, 5, 99, 9801],
       [1, 1, 1, 4, 99, 5, 6, 0, 99] => [30, 1, 1, 4, 2, 5, 6, 0, 99]
-    }.each_pair do |instructions, expected_instructions|
-      it "converts #{instructions} to #{expected_instructions}" do
+    }.each_pair do |instructions, expected_memory|
+      it "converts #{instructions} to #{expected_memory}" do
         program = described_class.new(instructions)
         program.run
-        updated_instructions = program.instructions.to_a
+        updated_memory = program.memory_readout
 
-        expect(updated_instructions).to eq(expected_instructions)
+        expect(updated_memory).to eq(expected_memory)
       end
     end
   end
