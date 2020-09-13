@@ -10,12 +10,16 @@ class Instructions
     @instructions = instructions
   end
 
-  def read_position(position)
+  def [](position)
     instructions[position]
   end
 
-  def write_position(position, value)
+  def []=(position, value)
     @instructions[position] = value
+  end
+
+  def size
+    instructions.size
   end
 
   private
