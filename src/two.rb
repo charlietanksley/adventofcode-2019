@@ -7,53 +7,53 @@ require "pry"
 # $ pry -Isrc
 #
 # require "two"
-# instructions = File.read("data/two_a.txt").split(",").map(&:to_i);
-# program = IntcodeProgram.new(instructions);
-# program.update_instructions(1, 12)
-# program.update_instructions(2, 2)
+# program_instructions = File.read("data/two_a.txt").split(",").map(&:to_i);
+# program = IntcodeProgram.new(program_instructions);
+# program.update_address(1, 12)
+# program.update_address(2, 2)
 # program.run
 # program.output
 #=> 574684
 
-# A set of Intcode instructions. Responsible for returning current
+# A set of Intcode memory. Responsible for returning current
 # values in the instruction set and and updating values at the request
 # of others.
-class Instructions
-  def initialize(instructions)
-    @instructions = instructions
+class Memory
+  def initialize(memory)
+    @memory = memory
   end
 
   def [](position)
-    instructions[position]
+    memory[position]
   end
 
   def []=(position, value)
-    @instructions[position] = value
+    @memory[position] = value
   end
 
   def size
-    instructions.size
+    memory.size
   end
 
   def to_a
-    instructions
+    memory
   end
 
   private
 
-  attr_reader :instructions
+  attr_reader :memory
 end
 
 # The interpreter that converts a subset of an Intcode instruction set
 # into instructions.
 class Operation
-  def initialize(opcode_position, instructions)
+  def initialize(opcode_position, memory)
     @opcode_position = opcode_position
-    @instructions = instructions
+    @memory = memory
   end
 
   def replacement_position
-    instructions[opcode_position + 3]
+    memory[opcode_position + 3]
   end
 
   def skip?
@@ -65,19 +65,19 @@ class Operation
   end
 
   def value
-    operand1 = instructions[instructions[opcode_position + 1]]
-    operand2 = instructions[instructions[opcode_position + 2]]
+    operand1 = memory[memory[opcode_position + 1]]
+    operand2 = memory[memory[opcode_position + 2]]
 
     operand1.send(operation, operand2)
   end
 
   private
 
-  attr_reader :instructions
+  attr_reader :memory
   attr_reader :opcode_position
 
   def opcode
-    instructions[opcode_position]
+    memory[opcode_position]
   end
 
   def operation
@@ -96,33 +96,37 @@ end
 # (an array of integers) as input and returns an instruction set
 # (array of integers) as output.
 class IntcodeProgram
-  attr_reader :instructions
+  attr_reader :memory
 
-  def initialize(instructions)
-    @instructions = Instructions.new(instructions)
+  def initialize(memory)
+    @memory = Memory.new(memory)
   end
 
   def output
-    instructions[0]
+    memory[0]
+  end
+
+  def memory_readout
+    memory.to_a
   end
 
   def run
     position = 0
-    instructions.size.times do
-      operation = Operation.new(position, instructions)
+    memory.size.times do
+      operation = Operation.new(position, memory)
 
       break if operation.terminate?
 
       if operation.skip?
         position += 1
       else
-        instructions[operation.replacement_position] = operation.value
+        memory[operation.replacement_position] = operation.value
         position += 4
       end
     end
   end
 
-  def update_instructions(location, value)
-    instructions[location] = value
+  def update_address(location, value)
+    memory[location] = value
   end
 end
