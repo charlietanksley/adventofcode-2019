@@ -16,6 +16,62 @@ RSpec.describe Instructions do
   end
 end
 
+RSpec.describe Operation do
+  let(:operation) { described_class.new(instructions) }
+
+  context "addition" do
+    let(:instructions) { [1, 1, 2, 1, 99] }
+
+    it "reports the action as 'execute'" do
+      expect(operation.action).to eq(Operation::EXECUTE)
+    end
+
+    it "identifies the correct position for the update" do
+      expect(operation.position).to eq(1)
+    end
+
+    it "identifies the correct value for the update" do
+      expect(operation.value).to eq(3)
+    end
+
+    it "gracefully handles a nil value"
+  end
+
+  context "multiplication" do
+    let(:instructions) { [1, 2, 2, 1, 99] }
+
+    it "reports the action as 'execute'" do
+      expect(operation.action).to eq(Operation::EXECUTE)
+    end
+
+    it "identifies the correct position for the update" do
+      expect(operation.position).to eq(1)
+    end
+
+    it "identifies the correct value for the update" do
+      expect(operation.value).to eq(4)
+    end
+
+    it "gracefully handles a nil value"
+  end
+
+  context "skipping" do
+    let(:instructions) { [nil, 1, 2, 1] }
+
+    it "reports the action as 'skip'" do
+      expect(operation.action).to eq(Operation::SKIP)
+    end
+  end
+
+  context "terminating" do
+    let(:instructions) { [99, 1, 2, 1] }
+
+    it "reports the action as 'terminate'" do
+      expect(operation.action).to eq(Operation::TERMINATE)
+    end
+  end
+end
+
 RSpec.describe Program do
   context "regression tests" do
     {

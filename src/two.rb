@@ -22,6 +22,56 @@ class Instructions
 
   attr_reader :instructions
 end
+
+# The interpreter that converts a subset of an Intcode instruction set
+# into instructions.
+class Operation
+  EXECUTE = :execute
+  TERMINATE = :terminate
+  SKIP = :skip
+
+  def initialize(instructions)
+    @instructions = instructions
+  end
+
+  def action
+    case opcode
+    when 1, 2
+      EXECUTE
+    when 99
+      TERMINATE
+    else
+      SKIP
+    end
+  end
+
+  def position
+    instructions[3]
+  end
+
+  def value
+    instructions[1].send(operation, instructions[2])
+  end
+
+  private
+
+  attr_reader :instructions
+
+  def operation
+    case opcode
+    when 1
+      :+
+    when 2
+      :*
+    else
+      raise NotImplementedError
+    end
+  end
+
+  def opcode
+    instructions[0]
+  end
+end
 # A program
 class Program
   attr_reader :states
