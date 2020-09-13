@@ -2,6 +2,20 @@
 
 require_relative "../src/two"
 
+RSpec.describe Instructions do
+  let(:instructions) { [0, 1, 2, nil] }
+  subject { described_class.new(instructions) }
+
+  it "can read the value at a position" do
+    expect(subject.read_position(0)).to eq(0)
+  end
+
+  it "can write a value to a position" do
+    subject.write_position(0, 1)
+    expect(subject.read_position(0)).to eq(1)
+  end
+end
+
 RSpec.describe Program do
   context "regression tests" do
     {
