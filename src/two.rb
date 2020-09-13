@@ -2,7 +2,7 @@
 
 require "pry"
 
-# How to run as part of https://adventofcode.com/2019/day/2
+# How to run as part 1 of https://adventofcode.com/2019/day/2
 #
 # $ pry -Isrc
 #
