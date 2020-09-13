@@ -18,12 +18,12 @@ class Instructions
     @instructions[position] = value
   end
 
-  def to_a
-    instructions
-  end
-
   def size
     instructions.size
+  end
+
+  def to_a
+    instructions
   end
 
   private
@@ -63,6 +63,10 @@ class Operation
   attr_reader :instructions
   attr_reader :opcode_position
 
+  def opcode
+    instructions[opcode_position]
+  end
+
   def operation
     case opcode
     when 1
@@ -72,10 +76,6 @@ class Operation
     else
       raise NotImplementedError
     end
-  end
-
-  def opcode
-    instructions[opcode_position]
   end
 end
 
