@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-require_relative "../src/two"
+$LOAD_PATH.unshift("lib")
+
+require "two"
 
 RSpec.describe Memory do
   let(:instructions) { [0, 1, 2, nil] }
