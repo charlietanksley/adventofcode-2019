@@ -32,8 +32,6 @@ RSpec.describe Operation do
     it "identifies the correct value for the update" do
       expect(operation.value).to eq(7)
     end
-
-    it "gracefully handles a nil value"
   end
 
   context "multiplication" do
@@ -50,8 +48,6 @@ RSpec.describe Operation do
     it "identifies the correct value for the update" do
       expect(operation.value).to eq(20)
     end
-
-    it "gracefully handles a nil value"
   end
 
   context "skipping" do
